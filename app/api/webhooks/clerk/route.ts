@@ -6,7 +6,8 @@ import { NextResponse } from "next/server";
 import { Webhook } from "svix";
 
 import { createUser, deleteUser, updateUser } from "@/lib/actions/user.actions";
-
+//webhook ka use hum jab kar payenge jab hum apne clerk me username,phonenumber,etc ka button bayenge clerk configuration me jakar toh
+//vhir data ko backend me send karega
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
