@@ -20,9 +20,9 @@ const populateUser = (query: any) => query.populate({
 export async function addImage({ image, userId, path }: AddImageParams) {
   try {
     await connectToDatabase();
-
+   
     const author = await User.findById(userId);
-
+   
     if (!author) {
       throw new Error("User not found");
     }
@@ -31,9 +31,9 @@ export async function addImage({ image, userId, path }: AddImageParams) {
       ...image,
       author: author._id,
     })
-
+    console.log("add image poil after",userId)
     revalidatePath(path);
-
+    
     return JSON.parse(JSON.stringify(newImage));
   } catch (error) {
     handleError(error)
@@ -111,7 +111,7 @@ export async function getAllImages({ limit = 9, page = 1, searchQuery = '' }: {
       secure: true,
     })
 
-    let expression = 'folder=ml_default';
+    let expression = 'folder=shahid';
 
     if (searchQuery) {
       expression += ` AND ${searchQuery}`
@@ -120,9 +120,10 @@ export async function getAllImages({ limit = 9, page = 1, searchQuery = '' }: {
     const { resources } = await cloudinary.search
       .expression(expression)
       .execute();
-
+      console.log(resources,"resource");
     const resourceIds = resources.map((resource: any) => resource.public_id);
-
+   
+   
     let query = {};
 
     if(searchQuery) {
@@ -132,12 +133,13 @@ export async function getAllImages({ limit = 9, page = 1, searchQuery = '' }: {
         }
       }
     }
-
+  console.log(query,"imageh");
+  
     const skipAmount = (Number(page) -1) * limit;
 
     const images = await populateUser(Image.find(query)) //are used for pagination of data
       .sort({ updatedAt: -1 })
-      .skip(skipAmount)
+      .skip(skipAmount) //skip are used to skip yhe image of previous page
       .limit(limit);
     
     const totalImages = await Image.find(query).countDocuments();

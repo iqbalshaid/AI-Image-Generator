@@ -46,7 +46,7 @@ const TransformationForm = ({ action, data = null, userId, type, config = null }
   const [transformationConfig, setTransformationConfig] = useState(config)
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
-
+ console.log(userId,"transform")
   const initialValues = data && action === 'Update' ? {
     title: data?.title,
     aspectRatio: data?.aspectRatio,
@@ -98,7 +98,7 @@ const TransformationForm = ({ action, data = null, userId, type, config = null }
           if(newImage) {
             form.reset()
             setImage(data)
-            router.push(`/transformations/${newImage._id}`)
+            router.push(`/transformation/${newImage._id}`)
           }
         } catch (error) {
           console.log(error);
@@ -113,11 +113,11 @@ const TransformationForm = ({ action, data = null, userId, type, config = null }
               _id: data._id
             },
             userId,
-            path: `/transformations/${data._id}`
+            path: `/transformation/${data._id}`
           })
 
           if(updatedImage) {
-            router.push(`/transformations/${updatedImage._id}`)
+            router.push(`/transformation/${updatedImage._id}`)
           }
         } catch (error) {
           console.log(error);
